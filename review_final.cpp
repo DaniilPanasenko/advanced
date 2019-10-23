@@ -40,20 +40,20 @@ std::vector<int> find_maximal_subsequence(const std::vector<int>& demand_coeffic
   int length_LCS = 0;
   for (int index = 0; index < length; ++index)
   {
-	int first = 0;
-	int last = LCS.size() - 1;
-	while (first <= last)
-	{
+    int first = 0;
+    int last = LCS.size() - 1;
+    while (first <= last)
+    {
 	  int middle = (first + last) / 2;
-	  if (demand_coefficients[index] <= LCS[middle])
-	  {
-		first = middle + 1;
-	  }
-	  else
-	  {
-		last = middle - 1;
-	  }
-	}
+      if (demand_coefficients[index] <= LCS[middle])
+      {
+        first = middle + 1;
+      }
+      else
+      {
+        last = middle - 1;
+      }
+    }
     int insert = first;
     LCS[insert] = demand_coefficients[index];
     position[insert] = index;
@@ -68,8 +68,8 @@ std::vector<int> find_maximal_subsequence(const std::vector<int>& demand_coeffic
   int temp = 0;
   while (current_position != -1)
   {
-	worker_indices[temp] = current_position + 1;
-	current_position = previous[current_position];
+    worker_indices[temp] = current_position + 1;
+    current_position = previous[current_position];
 	temp++;
   }
   reverse(worker_indices.begin(), worker_indices.end());
