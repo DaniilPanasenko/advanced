@@ -25,7 +25,7 @@ void write_workers_indices(const std::vector<int>& workers_indices, std::ostream
   std::cout << workers_indices.size() << std::endl;
   for (int i = 0; i < workers_indices.size(); ++i)
   {
-	std::cout << workers_indices[i] << std::endl;  
+    std::cout << workers_indices[i] << std::endl;  
   }
 }
 
@@ -44,7 +44,7 @@ std::vector<int> find_maximal_subsequence(const std::vector<int>& demand_coeffic
     int last = LCS.size() - 1;
     while (first <= last)
     {
-	  int middle = (first + last) / 2;
+      int middle = (first + last) / 2;
       if (demand_coefficients[index] <= LCS[middle])
       {
         first = middle + 1;
@@ -70,7 +70,7 @@ std::vector<int> find_maximal_subsequence(const std::vector<int>& demand_coeffic
   {
     worker_indices[temp] = current_position + 1;
     current_position = previous[current_position];
-	temp++;
+    temp++;
   }
   reverse(worker_indices.begin(), worker_indices.end());
   return worker_indices;
