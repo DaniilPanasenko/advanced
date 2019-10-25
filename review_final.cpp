@@ -25,48 +25,46 @@ void write_workers_indices(const std::vector<int>& workers_indices, std::ostream
 
 std::vector<int> find_maximal_subsequence(const std::vector<int>& demand_coefficients)
 {
-    int workers_number = demand_coefficients.size();
+    const int workers_number = demand_coefficients.size();
     std::vector<int> longest_common_subsequence(workers_number, std::numeric_limits<int>::min());
-    std::vector<int> previous_worker_indeces_in_subsequence(workers_number, 0);
-    std::vector<int> worker_indeces_in_subsequence(workers_number + 1, 0);
+    std::vector<int> previous_worker_indices_in_subsequence(workers_number, 0);
+    std::vector<int> worker_indices_in_subsequence(workers_number + 1, 0);
     longest_common_subsequence[0] = std::numeric_limits<int>::max();
-    worker_indeces_in_subsequence[0] = -1;
+    worker_indices_in_subsequence[0] = -1;
     int length_maximal_subsequence = 0;
     for (int worker_index = 0; worker_index < workers_number; ++worker_index)
     {
-        int left_bound_binsearch = 0;
-        int right_bound_binsearch = workers_number - 1;
-        while (left_bound_binsearch <= right_bound_binsearch)
+        int left_bound_binary_search = 0;
+        int right_bound_binary_search = workers_number - 1;
+        while (left_bound_binary_search <= right_bound_binary_search)
         {
-            int middle_element_binsearch = (left_bound_binsearch + right_bound_binsearch) / 2;
+            const int middle_element_binary_search = (left_bound_binary_search + right_bound_binary_search) / 2;
             if (demand_coefficients[worker_index] <= 
-                longest_common_subsequence[middle_element_binsearch])
+                longest_common_subsequence[middle_element_binary_search])
             {
-                left_bound_binsearch = middle_element_binsearch + 1;
+                left_bound_binary_search = middle_element_binary_search + 1;
             }
             else
             {
-                right_bound_binsearch = middle_element_binsearch - 1;
+                right_bound_binary_search = middle_element_binary_search - 1;
             }
         }
-        int insertion_position = left_bound_binsearch;
+        const int insertion_position = left_bound_binary_search;
         longest_common_subsequence[insertion_position] = demand_coefficients[worker_index];
-        worker_indeces_in_subsequence[insertion_position] = worker_index;
-        previous_worker_indeces_in_subsequence[worker_index] =
-            worker_indeces_in_subsequence[insertion_position - 1];
+        worker_indices_in_subsequence[insertion_position] = worker_index;
+        previous_worker_indices_in_subsequence[worker_index] =
+            worker_indices_in_subsequence[insertion_position - 1];
         if (insertion_position > length_maximal_subsequence)
         {
             length_maximal_subsequence = insertion_position;
         }
     }
-    std::vector<int> worker_indices(length_maximal_subsequence);
-    int current_position = worker_indeces_in_subsequence[length_maximal_subsequence];
-    int first_free_cell = 0;
+    std::vector<int> worker_indices(0);
+    int current_position = worker_indices_in_subsequence[length_maximal_subsequence];
     while (current_position != -1)
     {
-        worker_indices[first_free_cell] = current_position + 1;
-        current_position = previous_worker_indeces_in_subsequence[current_position];
-        first_free_cell++;
+        worker_indices.push_back(current_position + 1);
+        current_position = previous_worker_indices_in_subsequence[current_position];
     }
     reverse(worker_indices.begin(), worker_indices.end());
     return worker_indices;
