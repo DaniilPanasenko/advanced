@@ -2,89 +2,77 @@
 #include <random>
 #include <vector>
 
-class cortesianTree {
-	struct node
-	{
-		int value, priority, count;
-		int64_t summa;
-		bool reverse;
-		node* left, * right;
-		node(const int Value, const int Priority, node* Left, node* Right)
-		{
-			value = Value;
-			priority = Priority;
-			left = Left;
-			right = Right;
-			summa = value + getSum(left) + getSum(right);
-			count = 1 + getCount(left) + getCount(right);
-			reverse = false;
-		}
-	};
+class CartesianTree {
+  struct Node
+  {
+    int value, priority, count;
+    int64_t sum;
+	bool reverse;
+	Node* left, * right;
+	Node(const int _value, const int _priority, Node* _left, Node* _right);
+  };
 
-	static int getCount(node* tree);
+  static int getCount(Node* tree);
 
-	static int64_t getSum(node* tree);
+  static int64_t getSum(Node* tree);
 
-	static void updateSum(node* tree);
+  static void updateSum(Node* tree);
 
-	static void updateCount(node* tree);
+  static void updateCount(Node* tree);
 
-	node* root;
+  Node* root;
 
-	void push(node* tree);
+  void push(Node* tree);
 
-	node* merge(node* tree1, node* tree2);
+  Node* merge(Node* tree1, Node* tree2);
 
-	struct NodePair
-	{
-		node* node1;
-		node* node2;
-		NodePair(node* n1, node* n2)
-		{
-			node1 = n1;
-			node2 = n2;
-		}
-	};
+  struct NodePair
+  {
+	Node* node1;
+	Node* node2;
+	NodePair(Node* n1, Node* n2);
+  };
 
-	NodePair split(node* tree, const int splitkey, const int less = 0);
+  NodePair split(Node* tree, const int splitkey, const int less = 0);
 
 public:
-	cortesianTree()
-	{
-		root = NULL;
-	}
+  CartesianTree()
+  {
+	root = NULL;
+  }
 
-	void insert(const int pos, const int val);
+  void insert(const int position, const int value);
 
-	void reverse(const int left, const int right);
+  void reverse(const int leftBound, const int rightBound);
 
-	int64_t sumFromAToB(const int left, const int right);
+  int64_t sumFromAToB(const int leftBound, const int rightBound);
 };
 
 struct tripleQueryBounds
 {
-	int query;
-	int left;
-	int right;
+  int queryType;
+  int leftBound;
+  int rightBound;
 };
 
 int get_countStudents(std::istream& input = std::cin);
 
 int get_countQueries(std::istream& input = std::cin);
 
-void output_SumsOnSections(cortesianTree row, const std::vector<tripleQueryBounds>& queries, std::ostream& output = std::cout);
+void output_SumsOnSections(CartesianTree row, const std::vector<tripleQueryBounds>& queries, std::ostream& output = std::cout);
 
 std::vector<tripleQueryBounds> get_Queries(const int countQueries, std::istream& input = std::cin);
 
-cortesianTree FillRow(cortesianTree row, const int countStudents, std::istream& input = std::cin);
+CartesianTree FillRow(CartesianTree row, const int countStudents, std::istream& input = std::cin);
 
 int main()
 {
-	cortesianTree row;
-	int countStudents = get_countStudents();
-	int countQueries = get_countQueries();
-	row = FillRow(row, countStudents);
-	std::vector<tripleQueryBounds> queries = get_Queries(countQueries);
-	output_SumsOnSections(row, queries);
-	return 0;
+  CartesianTree row;
+  int countStudents = get_countStudents();
+  int countQueries = get_countQueries();
+  row = FillRow(row, countStudents);
+  std::vector<tripleQueryBounds> queries = get_Queries(countQueries);
+  output_SumsOnSections(row, queries);
+  return 0;
 }
+
