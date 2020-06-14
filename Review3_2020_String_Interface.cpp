@@ -7,36 +7,26 @@ struct Node{
     bool finally;
     int count;
     char letter;
-    explicit Node(char let){
-        letter = let;
-        childs.resize(0);
-        finally = false;
-        count = 0;
-    }
+    explicit Node(char character);
 };
 
-int search_letter(Node* node, char added);
+int search_letter(Node* node, char searched);
 
 int add_letter(Node* node, char added);
 
-Node* list_of_people = new Node(0);
+void add_people(Node* list_of_people, std::string name);
 
-void add_people(std::string name);
+std::string search_winner(Node* list_of_people, int number_winner);
 
-std::string search_winner(int num_winner);
+std::vector<std::string> get_commands();
+
+std::vector<std::string> get_winners(std::vector<std::string> commands);
+
+void print_winners(std::vector<std::string> winners);
 
 int main()
 {
-    int acts;
-    std::cin >> acts;
-    for (int i = 0; i < acts; i++){
-        std::string command;
-        std::cin >> command;
-        if (isdigit(command[0])){
-            std::cout << search_winner(stoi(command));
-            std::cout<< std::endl;
-        }else{
-            add_people(command);
-        }
-    }
+    std::vector<std::string> commands = get_commands();
+    std::vector<std::string> winners = get_winners(commands);
+    print_winners(winners);
 }
