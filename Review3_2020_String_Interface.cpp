@@ -30,9 +30,9 @@ class Lottery{
 
 std::vector<std::string> get_commands(std::istream& input = std::cin);
 
-std::vector<std::string> get_winners(std::vector<std::string> commands);
+std::vector<std::string> get_winners(const std::vector<std::string> commands);
 
-void print_winners(std::vector<std::string> winners, std::ostream& output = std::cout);
+void print_winners(const std::vector<std::string> winners, std::ostream& output = std::cout);
 
 int main()
 {
