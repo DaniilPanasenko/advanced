@@ -52,24 +52,28 @@ class Lottery {
         }
 
         int add_letter(const char added) {
-            int i;
+            int place_to_insert = static_cast<int>(this->children.size())-1;
             bool to_end = true;
-            for (i = 0; i < this->children.size(); i++) {
+            for (int i = 0; i < this->children.size(); i++) {
                 if (added < this->children[i]->letter) {
                     to_end = false;
+                    place_to_insert = i;
                     break;
                 }
             }
             if (!to_end) {
                 this->children.resize(this->children.size()+1);
-                for (int j = this->children.size()-1; j > i; j--) {
+                int children_size = static_cast<int>(this->children.size());
+                for (int j = children_size-1; j > place_to_insert; j--) {
                     this->children[j] = this->children[j-1];
                 }
-                this->children[i] = new Node(added);
-                return i;
+                this->children[place_to_insert] = new Node(added);
+                return place_to_insert;
             } else {
-                this->children.push_back(new Node(added));
-                return this->children.size()-1;
+                Node* new_node = new Node(added);
+                this->children.push_back(new_node);
+                int children_size = static_cast<int>(this->children.size());
+                return children_size-1;
             }
         }
     };
@@ -82,7 +86,7 @@ class Lottery {
     }
 
     void add_people(const std::string name) {
-        if (name.size() != 0) {
+        if (name.size() > 0) {
             Node* current_alphabet = list_of_people;
             char current_character = name[0];
             int letter_index_in_children;
@@ -114,16 +118,16 @@ class Lottery {
             if (current->get_is_final()) {
                 sum++;
             }
-            int i;
-            for (i = 0; number_winner > sum; i++) {
+            int letter_index_in_children = 0;
+            for (int i = 0; number_winner > sum; i++) {
                 std::vector<Node*> children = current->get_children();
                 sum += children[i]->get_count();
+                letter_index_in_children = i;
             }
-            i--;
             std::vector<Node*> children = current->get_children();
-            sum -= children[i]->get_count();
-            result+=children[i]->get_letter();
-            current = children[i];
+            sum -= children[letter_index_in_children]->get_count();
+            result+=children[letter_index_in_children]->get_letter();
+            current = children[letter_index_in_children];
         }
         return result;
     }
@@ -164,4 +168,5 @@ int main()
     const std::vector<std::string> commands = get_commands();
     const std::vector<std::string> winners = get_winners(commands);
     print_winners(winners);
+    return 0;
 }
